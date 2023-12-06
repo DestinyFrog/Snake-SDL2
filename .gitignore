@@ -1,0 +1,5 @@
+include
+.vscode
+lib
+SDL2.dll
+main.exe
