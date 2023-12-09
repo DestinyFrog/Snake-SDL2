@@ -82,6 +82,7 @@ void Snake::Move() {
 		} else {
 			this->party.pop_back();
 		}
+		return;
 	}
 
 	// move body
