@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <stdlib.h>
+
 #include "data.h"
 
 class Apple {

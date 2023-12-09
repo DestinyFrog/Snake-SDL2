@@ -5,6 +5,10 @@ struct Vector2 {
 	int x, y;
 };
 
+struct color {
+	int r,g,b;
+};
+
 class Config {
 	public:
 	Config();

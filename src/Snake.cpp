@@ -1,6 +1,7 @@
 #include "Snake.h"
 
 Snake::Snake( Config config ) {
+	this->Dying = false;
 	this->config = config;
 
 	this->size.x = config.UNIT;
@@ -30,7 +31,7 @@ void Snake::Grow() {
 	this->party.push_back( part );
 }
 
-bool Snake::Check_Hit_Pos( int tx, int ty ) {
+bool Snake::Check_Hit_or_Not( int tx, int ty ) {
 	return
 		( this->party[0].x == tx ) &&
 		( this->party[0].y == ty )
@@ -75,6 +76,14 @@ void Snake::Input( SDL_Keycode keyCode ) {
 }
 
 void Snake::Move() {
+	if ( this->Dying == true ) {
+		if (this->party.size() <= 1) {
+			this->Dying = false;
+		} else {
+			this->party.pop_back();
+		}
+	}
+
 	// move body
 	for ( int i = this->party.size() - 1; i > 0; i-- ){
 		this->party[i].x = this->party[i - 1].x;
@@ -103,18 +112,33 @@ void Snake::Move() {
 			this->party[0].y = 0;
 			break;
 	}
+
+	for ( int i = 1; i < this->party.size(); i++ ){
+		if ( this->party[0].x == this->party[i].x && this->party[0].y == this->party[i].y ) {
+			this->Dying = true;
+			break;
+		}
+	}
 }
 
 void Snake::Draw( SDL_Renderer *render ) {
 	SDL_Rect rect;
 
-	for ( Vector2 part : this->party ){
+	int color_part = 255 / this->party.size();
+
+	for ( int i = 0; i < this->party.size(); i++ ){
+		Vector2 part = this->party[i];
+
 		rect.x = part.x * this->size.x;
 		rect.y = part.y * this->size.y;
 		rect.w = this->size.x;
 		rect.h = this->size.y;
 
-		SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
-		SDL_RenderDrawRect(render, &rect);
+		SDL_SetRenderDrawColor(render, 255 - ( color_part * i ), 0, 255, 255);
+		SDL_RenderFillRect(render, &rect);
 	}
+}
+
+int Snake::Points() {
+	return this->party.size();
 }

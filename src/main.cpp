@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+
 #include <SDL2/SDL.h>
 #include "data.h"
 #include "Snake.h"
@@ -9,6 +10,10 @@
 Config config = Config();
 Snake snake = Snake( config );
 Apple apple = Apple( config );
+
+void start() {
+	apple.Repos();
+}
 
 void draw( SDL_Renderer *render ) {
 	// Update
@@ -20,19 +25,16 @@ void draw( SDL_Renderer *render ) {
 	apple.Draw( render );
 	snake.Draw( render );
 
-	if ( snake.Check_Hit_Pos( apple.position.x, apple.position.y ) == 1 ) {
+	if ( snake.Check_Hit_or_Not( apple.position.x, apple.position.y ) == 1 ) {
 		apple.Repos();
 		snake.Grow();
 	}
 
 	SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
 	SDL_RenderPresent(render);
-
-	// std::cout << "---" << std::endl;
 }
 
 void input( SDL_Keycode keyCode ) {
-	// std::cout << keyCode << std::endl;
 	snake.Input( keyCode );
 }
 
@@ -60,6 +62,8 @@ int main( int argc, char *argv[] ) {
 
 	int counter = 0;
 	int max_counter = 10;
+
+	start();
 
 	while ( true ) {
 		// Check if QUIT EVENT is triggered

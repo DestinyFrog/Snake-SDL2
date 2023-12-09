@@ -3,7 +3,9 @@
 Apple::Apple( Config config ) {
 	this->config = config;
 
-	this->Repos();
+	this->position.x = 0;
+	this->position.y = 0;
+
 	this->size.x = config.UNIT;
 	this->size.y = config.UNIT;
 }
@@ -21,5 +23,5 @@ void Apple::Draw(SDL_Renderer *render) {
 	rect.h = this->size.y;
 
 	SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-	SDL_RenderDrawRect(render, &rect);
+	SDL_RenderFillRect(render, &rect);
 }
